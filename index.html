@@ -1,432 +1,672 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora Taxas • Solar Roof | Sicredi</title>
-  <style>
-    :root{
-      --azul:#1b2d51;
-      --azul2:#243f73;
-      --fundo:#eef3fa;
-      --card:#ffffff;
-      --soft:#edf3fc;
-      --borda:#d5deec;
-      --texto:#06142b;
-      --muted:#516070;
-      --verde:#159000;
-      --sombra:0 14px 35px rgba(16,35,68,.10);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial, Helvetica, sans-serif;background:var(--fundo);color:var(--texto);padding:10px 14px 28px}
-    .app{max-width:980px;margin:auto}
-    header{background:#fff;color:var(--azul);border-radius:16px;padding:22px 18px;text-align:center;box-shadow:var(--sombra);margin-bottom:16px;border:1px solid #e4eaf3}
-    header{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
-    .logo{height:96px;max-width:360px;object-fit:contain;background:transparent;border-radius:0;padding:0}
-    .header-text{text-align:center}
-    header h1{font-size:28px;margin-bottom:5px}
-    header p{font-size:16px;opacity:.9;color:var(--azul);font-weight:600}
-    .main{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
-    .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:var(--sombra);border:1px solid #e4eaf3}
-    .card h2{font-size:20px;color:var(--azul);margin-bottom:18px;display:flex;gap:8px;align-items:center}
-    form{display:flex;flex-direction:column;gap:14px}
-    label{font-weight:800;font-size:14px;margin-bottom:6px;display:block}
-    input,select{width:100%;border:2px solid var(--borda);border-radius:10px;padding:13px 14px;font-size:16px;background:#fff;color:var(--texto)}
-    .money-wrap{position:relative}
-    .money-wrap .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--azul);pointer-events:none}
-    .money-wrap input{padding-left:44px}
-    input:focus,select:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(27,45,81,.10)}
-    .btn{border:0;border-radius:10px;padding:15px 16px;font-size:16px;font-weight:900;cursor:pointer;background:var(--azul);color:#fff;box-shadow:0 8px 18px rgba(27,45,81,.18);text-transform:uppercase;margin-top:4px}
-    .btn:hover{filter:brightness(1.06)}
-    .resultado-card{display:none;margin-top:16px;background:#f8fbff;border-left:4px solid var(--azul);border-radius:10px;padding:15px}
-    .resultado-card.active{display:block}
-    .linha{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:15px;border-bottom:1px dashed #d9e2ef}
-    .linha:last-child{border-bottom:0}
-    .linha b{text-align:right}
-    .green{color:var(--verde);font-weight:900;font-size:17px}
-    .detalhe-print{margin-top:12px;padding-top:10px;border-top:2px solid #d5deec}
-    .detalhe-print h4{font-size:15px;color:var(--azul);margin-bottom:8px}
-    .print-only{display:none}
-    .info{background:var(--soft);border-radius:14px;padding:18px;box-shadow:var(--sombra);margin-bottom:18px}
-    .info h3{color:var(--azul);font-size:18px;margin-bottom:10px}
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .step{background:#fff;border-left:4px solid var(--azul);border-radius:10px;padding:12px;font-size:13px;line-height:1.4}
-    .step strong{display:block;color:var(--azul);margin-bottom:4px}
-    .actions{display:flex;justify-content:center;gap:10px;margin-top:12px;flex-wrap:wrap}
-    .print-btn{background:#fff;color:var(--azul);border:2px solid var(--azul);box-shadow:none;width:auto;padding:12px 18px}
-    .limpar-btn{display:none;background:#fff;color:var(--azul);border:2px solid var(--borda);box-shadow:none;width:auto;padding:12px 18px}
-    .limpar-btn.active{display:inline-block}
-    footer{margin:8px 0 0;text-align:center;color:var(--muted);font-size:12.5px;line-height:1.4;font-weight:400}
-    .nota{font-size:12px;color:var(--muted);line-height:1.4;margin-top:10px;text-align:center}
-    @media(max-width:800px){.main,.steps{grid-template-columns:1fr}header h1{font-size:24px}.logo{height:82px;max-width:310px}.card{padding:16px}}
-    @media print{
-      body{background:#fff;padding:0;color:#000}.info,.actions,.btn,form,footer{display:none!important}.app{max-width:100%}header{box-shadow:none;border-radius:0;background:#fff;color:#000;border-bottom:2px solid #1b2d51}.logo{height:58px}.main{display:block}.card{box-shadow:none;border:0;page-break-inside:avoid;margin-bottom:18px}.resultado-card{border:1px solid #d5deec;margin-top:10px}.resultado-card:not(.active){display:none!important}.card h2{color:#000}.print-only{display:block}.linha{font-size:13px;padding:5px 0}.green{color:#000;font-size:16px}.print-cobranca #resultado_liquido,.print-cobranca .main section:nth-child(2),.print-liquido #resultado_cobranca,.print-liquido .main section:nth-child(1){display:none!important}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Vendas - Solar Roof • Sicredi</title>
+<style>
+:root{
+  --azul:#1b2d51;
+  --azul2:#243d6d;
+  --fundo:#eef4fb;
+  --borda:#cfdbeb;
+  --texto:#071833;
+  --verde:#119946;
+  --vermelho:#c92222;
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Verdana, Geneva, sans-serif;
+  background:var(--fundo);
+  color:var(--texto);
+}
+.wrapper{
+  max-width:980px;
+  margin:14px auto 34px;
+  padding:0 14px;
+}
+.topo{
+  background:#fff;
+  border-radius:14px;
+  padding:28px 20px 20px;
+  text-align:center;
+  box-shadow:0 12px 28px rgba(27,45,81,.10);
+  margin-bottom:16px;
+}
+.logo{
+  width:330px;
+  max-width:86%;
+  display:block;
+  margin:0 auto 14px;
+}
+.topo h1{
+  margin:0;
+  color:var(--azul);
+  font-size:28px;
+}
+.topo p{
+  margin:6px 0 0;
+  font-weight:700;
+  color:var(--azul);
+  font-size:14px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 10px 24px rgba(27,45,81,.10);
+}
+.card h2{
+  margin:0 0 18px;
+  color:var(--azul);
+  font-size:19px;
+}
+label{
+  font-weight:700;
+  display:block;
+  margin:13px 0 7px;
+  font-size:14px;
+}
+input, select{
+  width:100%;
+  height:46px;
+  border:1px solid var(--borda);
+  border-radius:9px;
+  padding:0 14px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:15px;
+  background:#fff;
+}
+.currency{
+  position:relative;
+}
+.currency span{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--azul);
+  font-weight:700;
+  font-size:14px;
+}
+.currency input{
+  padding-left:42px;
+}
+button{
+  width:100%;
+  height:48px;
+  border:0;
+  border-radius:9px;
+  background:var(--azul);
+  color:#fff;
+  font-weight:800;
+  font-family:Verdana, Geneva, sans-serif;
+  margin-top:16px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.btn-clear{
+  display:none;
+  background:#eef3fa;
+  color:var(--azul);
+  border:1px solid var(--borda);
+}
+.btn-print{
+  display:none;
+  background:#17965b;
+}
+.resultado{
+  display:none;
+  margin-top:16px;
+  background:#f5f8fc;
+  border-left:4px solid var(--azul);
+  border-radius:12px;
+  padding:14px 16px;
+}
+.resultado .linha{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  padding:8px 0;
+  border-bottom:1px dashed #d6e0ef;
+  font-size:14px;
+}
+.resultado .linha:last-child{border-bottom:0}
+.resultado strong{color:var(--azul)}
+.valor-verde{color:var(--verde);font-weight:800}
+.valor-vermelho{color:var(--vermelho);font-weight:800}
+.secao{
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px solid #cdd9ea;
+  font-weight:800;
+  color:var(--azul);
+}
+.como-usar{
+  margin-top:18px;
+  background:#fff;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 10px 24px rgba(27,45,81,.08);
+}
+.como-usar h3{
+  margin:0 0 12px;
+  color:var(--azul);
+}
+.como-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+}
+.como-item{
+  background:#f5f8fc;
+  border-left:4px solid var(--azul);
+  border-radius:9px;
+  padding:10px;
+  font-size:12px;
+  line-height:1.45;
+}
+.rodape{
+  max-width:900px;
+  margin:16px auto 0;
+  text-align:center;
+  font-size:11px;
+  color:#40506b;
+  line-height:1.4;
+}
+.gear{
+  position:fixed;
+  left:14px;
+  top:18px;
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid var(--borda);
+  box-shadow:0 10px 24px rgba(27,45,81,.15);
+  z-index:20;
+  font-size:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.25);
+  z-index:30;
+}
+.side{
+  position:fixed;
+  left:-380px;
+  top:0;
+  width:360px;
+  max-width:92vw;
+  height:100vh;
+  background:#fff;
+  z-index:40;
+  padding:18px;
+  box-shadow:8px 0 28px rgba(0,0,0,.25);
+  transition:left .25s ease;
+  overflow:auto;
+}
+.side.open{left:0}
+.overlay.open{display:block}
+.fechar{
+  width:auto;
+  padding:0 18px;
+  height:40px;
+  margin:0 0 16px;
+  background:#eef3fa;
+  color:var(--azul);
+  border:1px solid var(--borda);
+}
+.side h2{
+  color:var(--azul);
+  margin:0 0 12px;
+  font-size:21px;
+}
+.box-check{
+  background:#f6f9fd;
+  border:1px solid var(--borda);
+  border-radius:12px;
+  padding:12px;
+  margin:12px 0;
+}
+.box-check label{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  margin:0;
+  cursor:pointer;
+}
+.box-check input{
+  width:16px;
+  height:16px;
+  margin-top:2px;
+}
+.box-check p{
+  margin:6px 0 0 24px;
+  font-size:12px;
+  line-height:1.45;
+  color:#52627c;
+}
+.absorcao-campos{
+  display:none;
+}
+.absorcao-campos.show{
+  display:block;
+}
+.exemplo{
+  font-size:12px;
+  color:#52627c;
+  line-height:1.45;
+  margin:12px 0;
+}
+.absorcao-resultado{
+  display:none;
+  margin-top:14px;
+  padding:12px;
+  background:#f5f8fc;
+  border-left:4px solid var(--azul);
+  border-radius:10px;
+}
+.absorcao-resultado .linha{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px dashed #d6e0ef;
+  padding:7px 0;
+  font-size:13px;
+}
+@media(max-width:760px){
+  .grid,.como-grid{grid-template-columns:1fr}
+  .wrapper{margin-left:62px}
+}
+@media print{
+  body{background:#fff}
+  .gear,.side,.overlay,.como-usar,.rodape,.btn-clear,.btn-print,button,form,.topo{display:none!important}
+  .wrapper{margin:0;max-width:none}
+  .grid{display:block}
+  .card{display:none;box-shadow:none;border:0}
+  .card.printing{display:block!important}
+  .resultado{display:block!important;border:0;background:#fff}
+}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <img class="logo" src="https://arquivos-groner.s3.us-east-2.amazonaws.com/safeleadsfiles/solarroof/ativo6_f04a.png" alt="Solar Roof">
-      <div class="header-text">
-        <h1>Calculadora de Vendas</h1>
-        <p>Maquininha Sicredi</p>
-      </div>
-    </header>
 
+<div class="gear" id="btnAbrirSide" title="Opções comerciais">⚙️</div>
+<div class="overlay" id="overlay"></div>
 
-    <main class="main">
-      <section class="card">
-        <h2>💳 Valor Cobrado</h2>
-        <form id="formCobranca">
-          <div>
-            <label for="valor_cobranca">Valor do cliente</label>
-            <div class="money-wrap"><span class="prefix">R$</span><input type="text" id="valor_cobranca" placeholder="0,00" inputmode="decimal" required></div>
-          </div>
-          <div>
-            <label for="meio_cobranca">Meio de pagamento</label>
-            <select id="meio_cobranca">
-              <option value="debito">Débito</option>
-              <option value="avista">Crédito à vista</option>
-              <option value="parcelado">Parcelado</option>
-            </select>
-          </div>
-          <div>
-            <label for="parcelas_cobranca">Parcelas</label>
-            <select id="parcelas_cobranca"></select>
-          </div>
-          <div>
-            <label for="bandeira_cobranca">Bandeira</label>
-            <select id="bandeira_cobranca">
-              <option value="visa_master">Visa / Mastercard</option>
-              <option value="elo">Elo</option>
-              <option value="amex">AMEX</option>
-              <option value="cabal">Cabal</option>
-            </select>
-          </div>
-          <button type="submit" class="btn">Simular</button>
-          <button type="button" class="btn limpar-btn" id="limpar_cobranca" onclick="limparSimulacao('cobranca')">Limpar</button>
-        </form>
-        <div id="resultado_cobranca" class="resultado-card">
-          <div class="linha"><span>Data da simulação</span><b id="c_data">-</b></div>
-          <div class="linha"><span>Bandeira</span><b id="c_bandeira">-</b></div>
-          <div class="linha"><span>Meio de pagamento</span><b id="c_meio">-</b></div>
-          <div class="linha"><span>Cliente paga</span><b id="c_cliente">R$ 0,00</b></div>
-          <div class="linha"><span>Valor em conta</span><b class="green" id="c_recebe">R$ 0,00</b></div>
-          <div class="linha"><span>Valor parcela</span><b id="c_parcela">R$ 0,00</b></div>
-          <div class="detalhe-print">
-            <h4>Detalhamento das taxas</h4>
-            <div class="linha"><span>Taxa de venda</span><b id="c_taxa_venda">0,00%</b></div>
-            <div class="linha"><span>Desconto de venda</span><b id="c_venda_valor">R$ 0,00</b></div>
-            <div class="linha"><span>Taxa de antecipação</span><b id="c_taxa_ant">0,00%</b></div>
-            <div class="linha"><span>Desconto de antecipação</span><b id="c_ant_valor">R$ 0,00</b></div>
-            <div class="linha"><span>Total retido</span><b id="c_retido">R$ 0,00</b></div>
-            <div class="linha"><span>Taxa total efetiva</span><b id="c_taxa_total">0,00%</b></div>
-          </div>
-          <div class="actions"><button class="btn print-btn" type="button" onclick="imprimirResultado('cobranca')">Imprimir / Salvar em PDF</button></div>
-        </div>
-      </section>
+<aside class="side" id="side">
+  <button class="fechar" id="btnFecharSide">Fechar</button>
+  <h2>Opções comerciais</h2>
 
-      <section class="card">
-        <h2>💰 Valor Desejado</h2>
-        <form id="formLiquido">
-          <div>
-            <label for="valor_liquido">Valor a receber</label>
-            <div class="money-wrap"><span class="prefix">R$</span><input type="text" id="valor_liquido" placeholder="0,00" inputmode="decimal" required></div>
-          </div>
-          <div>
-            <label for="meio_liquido">Meio de pagamento</label>
-            <select id="meio_liquido">
-              <option value="debito">Débito</option>
-              <option value="avista">Crédito à vista</option>
-              <option value="parcelado">Parcelado</option>
-            </select>
-          </div>
-          <div>
-            <label for="parcelas_liquido">Parcelas</label>
-            <select id="parcelas_liquido"></select>
-          </div>
-          <div>
-            <label for="bandeira_liquido">Bandeira</label>
-            <select id="bandeira_liquido">
-              <option value="visa_master">Visa / Mastercard</option>
-              <option value="elo">Elo</option>
-              <option value="amex">AMEX</option>
-              <option value="cabal">Cabal</option>
-            </select>
-          </div>
-          <button type="submit" class="btn">Simular</button>
-          <button type="button" class="btn limpar-btn" id="limpar_liquido" onclick="limparSimulacao('liquido')">Limpar</button>
-        </form>
-        <div id="resultado_liquido" class="resultado-card">
-          <div class="linha"><span>Data da simulação</span><b id="l_data">-</b></div>
-          <div class="linha"><span>Bandeira</span><b id="l_bandeira">-</b></div>
-          <div class="linha"><span>Meio de pagamento</span><b id="l_meio">-</b></div>
-          <div class="linha"><span>Valor a cobrar</span><b class="green" id="l_cliente">R$ 0,00</b></div>
-          <div class="linha"><span>Você recebe</span><b id="l_recebe">R$ 0,00</b></div>
-          <div class="linha"><span>Valor parcela</span><b id="l_parcela">R$ 0,00</b></div>
-          <div class="detalhe-print">
-            <h4>Detalhamento das taxas</h4>
-            <div class="linha"><span>Taxa de venda</span><b id="l_taxa_venda">0,00%</b></div>
-            <div class="linha"><span>Desconto de venda</span><b id="l_venda_valor">R$ 0,00</b></div>
-            <div class="linha"><span>Taxa de antecipação</span><b id="l_taxa_ant">0,00%</b></div>
-            <div class="linha"><span>Desconto de antecipação</span><b id="l_ant_valor">R$ 0,00</b></div>
-            <div class="linha"><span>Total retido</span><b id="l_retido">R$ 0,00</b></div>
-            <div class="linha"><span>Taxa total efetiva</span><b id="l_taxa_total">0,00%</b></div>
-          </div>
-          <div class="actions"><button class="btn print-btn" type="button" onclick="imprimirResultado('liquido')">Imprimir / Salvar em PDF</button></div>
-        </div>
-      </section>
-    </main>
-
-    <section class="info">
-      <h3>📋 Como Usar</h3>
-      <div class="steps">
-        <div class="step"><strong>1️⃣ Valor Cobrado</strong>Informe o valor que o cliente irá pagar e veja quanto entra em conta.</div>
-        <div class="step"><strong>2️⃣ Valor Desejado</strong>Informe o valor líquido que deseja receber e veja quanto cobrar do cliente.</div>
-        <div class="step"><strong>3️⃣ Bandeira e parcelas</strong>As parcelas são liberadas conforme a bandeira: Visa/Master e Elo até 21x; AMEX e Cabal até 12x.</div>
-      </div>
-    </section>
-
-    <footer>
-      Parcelamento disponível em até 21x, sujeito à disponibilidade e aprovação da quantidade de parcelas pela operadora e pela bandeira do cartão do cliente.
-    </footer>
+  <div class="box-check">
+    <label for="ativarAbsorcao">
+      <input type="checkbox" id="ativarAbsorcao">
+      <span>Absorção parcial de juros</span>
+    </label>
+    <p>A empresa absorve as taxas até uma quantidade de parcelas e repassa apenas o excedente ao cliente.</p>
   </div>
 
-  <script>
-    const BASE = 10000;
-    const tabelas = {
-      visa_master: {
-        nome: "Visa / Mastercard", maxParcelas: 21,
-        debito: {venda:1.00, antecipacao:0, liquido:9900.00},
-        avista: {venda:1.95, antecipacao:1.53, liquido:9654.30},
-        parcelado: {
-          2:{venda:2.05, antecipacao:2.38, liquido:9561.39},
-          3:{venda:2.05, antecipacao:3.16, liquido:9485.25},
-          4:{venda:2.05, antecipacao:3.94, liquido:9408.24},
-          5:{venda:2.05, antecipacao:4.73, liquido:9330.91},
-          6:{venda:2.05, antecipacao:5.53, liquido:9252.50},
-          7:{venda:2.10, antecipacao:6.32, liquido:9170.32},
-          8:{venda:2.10, antecipacao:7.12, liquido:9092.78},
-          9:{venda:2.10, antecipacao:7.92, liquido:9014.00},
-          10:{venda:2.10, antecipacao:8.71, liquido:8936.46},
-          11:{venda:2.10, antecipacao:9.51, liquido:8858.86},
-          12:{venda:2.10, antecipacao:10.30, liquido:8781.22},
-          13:{venda:2.10, antecipacao:11.10, liquido:8703.18},
-          14:{venda:2.10, antecipacao:11.89, liquido:8625.52},
-          15:{venda:2.10, antecipacao:12.68, liquido:8547.83},
-          16:{venda:2.10, antecipacao:13.48, liquido:8469.49},
-          17:{venda:2.10, antecipacao:14.28, liquido:8391.81},
-          18:{venda:2.10, antecipacao:15.07, liquido:8314.12},
-          19:{venda:2.10, antecipacao:15.86, liquido:8236.38},
-          20:{venda:2.10, antecipacao:16.66, liquido:8158.41},
-          21:{venda:2.10, antecipacao:17.45, liquido:8080.69}
-        }
-      },
-      elo: {nome:"Elo", maxParcelas:21, grupoOutras:true, debito:{venda:2.50, antecipacao:0, liquido:9750.00}},
-      amex: {nome:"AMEX", maxParcelas:12, grupoOutras:true, semDebito:true},
-      cabal:{nome:"Cabal", maxParcelas:12, grupoOutras:true, debito:{venda:2.50, antecipacao:0, liquido:9750.00}}
-    };
-    const outras = {
-      avista:{venda:3.55, antecipacao:1.53, liquido:9496.76},
-      parcelado:{
-        2:{venda:4.15, antecipacao:2.38, liquido:9356.40},
-        3:{venda:4.15, antecipacao:3.16, liquido:9281.89},
-        4:{venda:4.15, antecipacao:3.94, liquido:9206.54},
-        5:{venda:4.15, antecipacao:4.73, liquido:9130.85},
-        6:{venda:4.15, antecipacao:5.53, liquido:9054.15},
-        7:{venda:4.59, antecipacao:6.32, liquido:8937.08},
-        8:{venda:4.59, antecipacao:7.12, liquido:8861.49},
-        9:{venda:4.59, antecipacao:7.92, liquido:8784.75},
-        10:{venda:4.59, antecipacao:8.71, liquido:8709.16},
-        11:{venda:4.59, antecipacao:9.51, liquido:8633.55},
-        12:{venda:4.59, antecipacao:10.30, liquido:8557.88},
-        13:{venda:4.59, antecipacao:11.10, liquido:8481.41},
-        14:{venda:4.59, antecipacao:11.89, liquido:8406.10},
-        15:{venda:4.59, antecipacao:12.68, liquido:8330.77},
-        16:{venda:4.59, antecipacao:13.48, liquido:8254.71},
-        17:{venda:4.59, antecipacao:14.27, liquido:8179.38},
-        18:{venda:4.59, antecipacao:15.07, liquido:8103.31},
-        19:{venda:4.59, antecipacao:15.86, liquido:8027.24},
-        20:{venda:4.59, antecipacao:16.66, liquido:7951.20},
-        21:{venda:4.59, antecipacao:17.45, liquido:7875.18}
-      }
-    };
+  <div id="camposAbsorcao" class="absorcao-campos">
+    <p class="exemplo">
+      Exemplo: valor base R$ 42.000, empresa absorve até 10x, cliente quer 18x.
+      O sistema calcula quanto cobrar em 18x para manter o líquido equivalente ao parcelamento absorvido.
+    </p>
 
-    const $ = id => document.getElementById(id);
-    const moeda = v => new Intl.NumberFormat("pt-BR", {style:"currency", currency:"BRL"}).format(v || 0);
-    function parseMoeda(valor){
-      if(typeof valor !== "string") return Number(valor) || 0;
-      return Number(valor.replace(/\s/g, "").replace(/R\$/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+    <label>Valor base da venda</label>
+    <div class="currency">
+      <span>R$</span>
+      <input id="absValorBase" inputmode="numeric" placeholder="0,00">
+    </div>
+
+    <label>Bandeira</label>
+    <select id="absBandeira">
+      <option value="vm">Visa / Mastercard</option>
+      <option value="elo">Elo</option>
+      <option value="amex">AMEX</option>
+      <option value="cabal">Cabal</option>
+    </select>
+
+    <label>Parcelas absorvidas pela empresa</label>
+    <select id="absParcelasEmpresa"></select>
+
+    <label>Parcelamento desejado pelo cliente</label>
+    <select id="absParcelasCliente"></select>
+
+    <button id="btnSimularAbsorcao">SIMULAR ABSORÇÃO</button>
+
+    <div id="resultadoAbsorcao" class="absorcao-resultado"></div>
+  </div>
+</aside>
+
+<div class="wrapper">
+  <header class="topo">
+    <img class="logo" src="https://arquivos-groner.s3.us-east-2.amazonaws.com/safeleadsfiles/solarroof/ativo6_f04a.png" alt="Solar Roof Energia">
+    <h1>Calculadora de Vendas</h1>
+    <p>Maquininha Sicredi</p>
+  </header>
+
+  <main class="grid">
+    <section class="card" id="cardCobrado">
+      <h2>💳 Valor Cobrado</h2>
+      <form id="formCobrado">
+        <label>Valor do cliente</label>
+        <div class="currency"><span>R$</span><input id="valorCobrado" inputmode="numeric" placeholder="0,00"></div>
+
+        <label>Meio de pagamento</label>
+        <select id="meioCobrado">
+          <option value="debito">Débito</option>
+          <option value="avista">Crédito à vista</option>
+          <option value="parcelado">Parcelado</option>
+        </select>
+
+        <label>Parcelas</label>
+        <select id="parcelasCobrado"></select>
+
+        <label>Bandeira</label>
+        <select id="bandeiraCobrado">
+          <option value="vm">Visa / Mastercard</option>
+          <option value="elo">Elo</option>
+          <option value="amex">AMEX</option>
+          <option value="cabal">Cabal</option>
+        </select>
+
+        <button type="submit">SIMULAR</button>
+        <button type="button" class="btn-clear" id="limparCobrado">LIMPAR</button>
+        <button type="button" class="btn-print" id="printCobrado">IMPRIMIR / SALVAR PDF</button>
+      </form>
+      <div class="resultado" id="resCobrado"></div>
+    </section>
+
+    <section class="card" id="cardDesejado">
+      <h2>💰 Valor Desejado</h2>
+      <form id="formDesejado">
+        <label>Valor a receber</label>
+        <div class="currency"><span>R$</span><input id="valorDesejado" inputmode="numeric" placeholder="0,00"></div>
+
+        <label>Meio de pagamento</label>
+        <select id="meioDesejado">
+          <option value="debito">Débito</option>
+          <option value="avista">Crédito à vista</option>
+          <option value="parcelado">Parcelado</option>
+        </select>
+
+        <label>Parcelas</label>
+        <select id="parcelasDesejado"></select>
+
+        <label>Bandeira</label>
+        <select id="bandeiraDesejado">
+          <option value="vm">Visa / Mastercard</option>
+          <option value="elo">Elo</option>
+          <option value="amex">AMEX</option>
+          <option value="cabal">Cabal</option>
+        </select>
+
+        <button type="submit">SIMULAR</button>
+        <button type="button" class="btn-clear" id="limparDesejado">LIMPAR</button>
+        <button type="button" class="btn-print" id="printDesejado">IMPRIMIR / SALVAR PDF</button>
+      </form>
+      <div class="resultado" id="resDesejado"></div>
+    </section>
+  </main>
+
+  <section class="como-usar" id="comoUsar">
+    <h3>📋 Como Usar</h3>
+    <div class="como-grid">
+      <div class="como-item"><strong>1️⃣ Valor Cobrado</strong><br>Informe o valor que o cliente irá pagar e veja quanto entra em conta.</div>
+      <div class="como-item"><strong>2️⃣ Valor Desejado</strong><br>Informe o valor líquido que deseja receber e veja quanto cobrar do cliente.</div>
+      <div class="como-item"><strong>3️⃣ Bandeira e parcelas</strong><br>Visa/Master e Elo até 21x; AMEX e Cabal até 12x.</div>
+    </div>
+  </section>
+
+  <footer class="rodape">
+    Parcelamento disponível em até 21x, sujeito à disponibilidade e aprovação da quantidade de parcelas pela operadora e pela bandeira do cartão do cliente.
+  </footer>
+</div>
+
+<script>
+const dados = {
+  vm: {
+    nome:"Visa / Mastercard",
+    max:21,
+    debito:{taxaVenda:1.00, taxaAnt:0, liquido10k:9900.00},
+    avista:{taxaVenda:1.95, taxaAnt:1.53, liquido10k:9654.30},
+    parcelas:{
+      2:{taxaVenda:2.05,taxaAnt:2.38,liquido10k:9561.39},
+      3:{taxaVenda:2.05,taxaAnt:3.16,liquido10k:9485.25},
+      4:{taxaVenda:2.05,taxaAnt:3.94,liquido10k:9408.24},
+      5:{taxaVenda:2.05,taxaAnt:4.73,liquido10k:9330.91},
+      6:{taxaVenda:2.05,taxaAnt:5.53,liquido10k:9252.50},
+      7:{taxaVenda:2.10,taxaAnt:6.32,liquido10k:9170.32},
+      8:{taxaVenda:2.10,taxaAnt:7.12,liquido10k:9092.78},
+      9:{taxaVenda:2.10,taxaAnt:7.92,liquido10k:9014.00},
+      10:{taxaVenda:2.10,taxaAnt:8.71,liquido10k:8936.46},
+      11:{taxaVenda:2.10,taxaAnt:9.51,liquido10k:8858.86},
+      12:{taxaVenda:2.10,taxaAnt:10.30,liquido10k:8781.22},
+      13:{taxaVenda:2.10,taxaAnt:11.10,liquido10k:8703.18},
+      14:{taxaVenda:2.10,taxaAnt:11.89,liquido10k:8625.52},
+      15:{taxaVenda:2.10,taxaAnt:12.68,liquido10k:8547.83},
+      16:{taxaVenda:2.10,taxaAnt:13.48,liquido10k:8469.49},
+      17:{taxaVenda:2.10,taxaAnt:14.28,liquido10k:8391.81},
+      18:{taxaVenda:2.10,taxaAnt:15.07,liquido10k:8314.12},
+      19:{taxaVenda:2.10,taxaAnt:15.86,liquido10k:8236.38},
+      20:{taxaVenda:2.10,taxaAnt:16.66,liquido10k:8158.41},
+      21:{taxaVenda:2.10,taxaAnt:17.45,liquido10k:8080.69}
     }
-    function formatarCampoMoeda(input){
-      const numero = parseMoeda(input.value);
-      if(numero > 0){ input.value = numero.toLocaleString("pt-BR", {minimumFractionDigits:2, maximumFractionDigits:2}); }
-    }
-    const arredondaTaxaParaCima = v => Math.ceil(((v || 0) - 0.000000001) * 100) / 100;
-    const pct = v => arredondaTaxaParaCima(v).toLocaleString("pt-BR", {minimumFractionDigits:2, maximumFractionDigits:2}) + "%";
-    const arred = v => Math.round((v + Number.EPSILON) * 100) / 100;
-    const tetoCentavos = v => Math.ceil((v - 0.0000001) * 100) / 100;
-    const pisoCentavos = v => Math.floor((v + 0.0000001) * 100) / 100;
+  },
+  elo: {nome:"Elo", max:21, debito:{taxaVenda:2.50,taxaAnt:0,liquido10k:9750.00}, avista:{taxaVenda:3.55,taxaAnt:1.53,liquido10k:9496.76}, parcelas:{}},
+  amex:{nome:"AMEX", max:12, debito:null, avista:{taxaVenda:3.55,taxaAnt:1.53,liquido10k:9496.76}, parcelas:{}},
+  cabal:{nome:"Cabal", max:12, debito:{taxaVenda:2.50,taxaAnt:0,liquido10k:9750.00}, avista:{taxaVenda:3.55,taxaAnt:1.53,liquido10k:9496.76}, parcelas:{}}
+};
+const demais = {
+  2:{taxaVenda:4.15,taxaAnt:2.38,liquido10k:9356.40},
+  3:{taxaVenda:4.15,taxaAnt:3.16,liquido10k:9281.89},
+  4:{taxaVenda:4.15,taxaAnt:3.94,liquido10k:9206.54},
+  5:{taxaVenda:4.15,taxaAnt:4.73,liquido10k:9130.85},
+  6:{taxaVenda:4.15,taxaAnt:5.53,liquido10k:9054.15},
+  7:{taxaVenda:4.59,taxaAnt:6.32,liquido10k:8937.08},
+  8:{taxaVenda:4.59,taxaAnt:7.12,liquido10k:8861.49},
+  9:{taxaVenda:4.59,taxaAnt:7.92,liquido10k:8784.75},
+  10:{taxaVenda:4.59,taxaAnt:8.71,liquido10k:8709.16},
+  11:{taxaVenda:4.59,taxaAnt:9.51,liquido10k:8633.55},
+  12:{taxaVenda:4.59,taxaAnt:10.30,liquido10k:8557.88},
+  13:{taxaVenda:4.59,taxaAnt:11.10,liquido10k:8481.41},
+  14:{taxaVenda:4.59,taxaAnt:11.89,liquido10k:8406.10},
+  15:{taxaVenda:4.59,taxaAnt:12.68,liquido10k:8330.77},
+  16:{taxaVenda:4.59,taxaAnt:13.48,liquido10k:8254.71},
+  17:{taxaVenda:4.59,taxaAnt:14.27,liquido10k:8179.38},
+  18:{taxaVenda:4.59,taxaAnt:15.07,liquido10k:8103.31},
+  19:{taxaVenda:4.59,taxaAnt:15.86,liquido10k:8027.24},
+  20:{taxaVenda:4.59,taxaAnt:16.66,liquido10k:7951.20},
+  21:{taxaVenda:4.59,taxaAnt:17.45,liquido10k:7875.18}
+};
+["elo","amex","cabal"].forEach(b=>dados[b].parcelas = demais);
 
-    // Taxa total efetiva conservadora: arredondada sempre para cima.
-    // Isso evita que o valor líquido fique abaixo do desejado por diferença de centavos.
-    function taxaTotalConservadora(reg){
-      const taxaBase = ((BASE - reg.liquido) / BASE) * 100;
-      return arredondaTaxaParaCima(taxaBase);
-    }
+function moeda(v){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0)}
+function numBR(v){return (v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function parseMoeda(str){return Number(String(str||"").replace(/\D/g,""))/100}
+function fmtInput(el){
+  const v=parseMoeda(el.value);
+  el.value=numBR(v);
+}
+document.querySelectorAll('input[inputmode="numeric"]').forEach(el=>{
+  el.addEventListener("input",()=>fmtInput(el));
+  el.addEventListener("focus",()=>{ if(el.value==="0,00") el.value=""; });
+  el.addEventListener("blur",()=>{ if(!el.value) el.value="0,00"; else fmtInput(el); });
+});
 
-    function calcularRecebimentoConservador(cliente, reg){
-      const taxaTotal = taxaTotalConservadora(reg);
-      const fator = 1 - (taxaTotal / 100);
-      return pisoCentavos(cliente * fator);
-    }
+function preencherParcelas(sel, meio, bandeira){
+  sel.innerHTML="";
+  const b=dados[bandeira];
+  if(meio==="debito"){
+    sel.innerHTML='<option value="0">-</option>';
+    sel.disabled=true;
+    return;
+  }
+  if(meio==="avista"){
+    sel.innerHTML='<option value="1">Crédito à vista</option>';
+    sel.disabled=true;
+    return;
+  }
+  sel.disabled=false;
+  for(let i=2;i<=b.max;i++){
+    sel.innerHTML += `<option value="${i}">${i}x</option>`;
+  }
+}
+function obterRegistro(bandeira, meio, parcela){
+  const b=dados[bandeira];
+  if(meio==="debito") return b.debito;
+  if(meio==="avista") return b.avista;
+  return b.parcelas[parcela];
+}
+function simularPorValorCobrado(valor, bandeira, meio, parcela){
+  const reg=obterRegistro(bandeira,meio,parcela);
+  const fator=reg.liquido10k/10000;
+  const liquido=valor*fator;
+  const descVenda=valor*(reg.taxaVenda/100);
+  const totalRetido=valor-liquido;
+  const descAnt=Math.max(0,totalRetido-descVenda);
+  const taxaEfetiva=(totalRetido/valor)*100;
+  return {valorCliente:valor, liquido, descVenda, descAnt, totalRetido, taxaEfetiva, taxaVenda:reg.taxaVenda, taxaAnt:reg.taxaAnt, parcelaValor: meio==="parcelado"? valor/parcela: valor, parcela};
+}
+function simularPorLiquidoDesejado(liquidoDesejado,bandeira,meio,parcela){
+  const reg=obterRegistro(bandeira,meio,parcela);
+  const fator=reg.liquido10k/10000;
+  const valorCliente=liquidoDesejado/fator;
+  return simularPorValorCobrado(valorCliente,bandeira,meio,parcela);
+}
+function modalidadeTexto(meio, parcela){
+  if(meio==="debito") return "Débito";
+  if(meio==="avista") return "Crédito à vista";
+  return `Crédito parcelado em ${parcela}x`;
+}
+function renderResultado(el, s, bandeira, meio){
+  el.innerHTML = `
+    <div class="linha"><span>Data da simulação</span><strong>${new Date().toLocaleDateString("pt-BR")}</strong></div>
+    <div class="linha"><span>Bandeira</span><strong>${dados[bandeira].nome}</strong></div>
+    <div class="linha"><span>Meio de pagamento</span><strong>${modalidadeTexto(meio,s.parcela)}</strong></div>
+    <div class="linha"><span>Cliente paga</span><strong>${moeda(s.valorCliente)}</strong></div>
+    <div class="linha"><span>Você recebe</span><span class="valor-verde">${moeda(s.liquido)}</span></div>
+    <div class="linha"><span>Valor da parcela</span><strong>${meio==="parcelado" ? `${moeda(s.parcelaValor)} em ${s.parcela}x` : moeda(s.parcelaValor)}</strong></div>
+    <div class="linha"><span>Total retido</span><span class="valor-vermelho">${moeda(s.totalRetido)}</span></div>
+    <div class="secao">Detalhamento das taxas</div>
+    <div class="linha"><span>Taxa de venda</span><strong>${numBR(s.taxaVenda)}%</strong></div>
+    <div class="linha"><span>Desconto de venda</span><strong>${moeda(s.descVenda)}</strong></div>
+    <div class="linha"><span>Taxa de antecipação</span><strong>${numBR(s.taxaAnt)}%</strong></div>
+    <div class="linha"><span>Desconto de antecipação</span><strong>${moeda(s.descAnt)}</strong></div>
+    <div class="linha"><span>Taxa total efetiva</span><strong>${numBR(s.taxaEfetiva)}%</strong></div>
+  `;
+  el.style.display="block";
+  document.getElementById("comoUsar").style.display="none";
+}
+function setupCalc(prefix){
+  const meio=document.getElementById("meio"+prefix);
+  const band=document.getElementById("bandeira"+prefix);
+  const parc=document.getElementById("parcelas"+prefix);
+  const form=document.getElementById("form"+prefix);
+  const res=document.getElementById("res"+prefix);
+  const limpar=document.getElementById("limpar"+prefix);
+  const print=document.getElementById("print"+prefix);
+  const card=document.getElementById("card"+prefix);
+  const input=document.getElementById(prefix==="Cobrado"?"valorCobrado":"valorDesejado");
+  function refresh(){preencherParcelas(parc,meio.value,band.value)}
+  meio.addEventListener("change",refresh);
+  band.addEventListener("change",refresh);
+  refresh();
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const v=parseMoeda(input.value);
+    if(!v){alert("Informe um valor válido.");return}
+    const p=Number(parc.value);
+    const s= prefix==="Cobrado" ? simularPorValorCobrado(v,band.value,meio.value,p) : simularPorLiquidoDesejado(v,band.value,meio.value,p);
+    renderResultado(res,s,band.value,meio.value);
+    limpar.style.display="block";
+    print.style.display="block";
+  });
+  limpar.addEventListener("click",()=>{
+    input.value="0,00";
+    res.style.display="none";
+    limpar.style.display="none";
+    print.style.display="none";
+    document.getElementById("comoUsar").style.display="block";
+  });
+  print.addEventListener("click",()=>{
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("printing"));
+    card.classList.add("printing");
+    window.print();
+  });
+}
+setupCalc("Cobrado");
+setupCalc("Desejado");
 
-    function calcularValorCobrarConservador(recebe, reg){
-      const taxaTotal = taxaTotalConservadora(reg);
-      const fator = 1 - (taxaTotal / 100);
-      let cliente = tetoCentavos(recebe / fator);
+// Painel lateral
+const side=document.getElementById("side");
+const overlay=document.getElementById("overlay");
+document.getElementById("btnAbrirSide").onclick=()=>{side.classList.add("open"); overlay.classList.add("open")}
+document.getElementById("btnFecharSide").onclick=()=>{side.classList.remove("open"); overlay.classList.remove("open")}
+overlay.onclick=()=>{side.classList.remove("open"); overlay.classList.remove("open")}
 
-      // Garante que o líquido nunca fique abaixo do desejado.
-      while(calcularRecebimentoConservador(cliente, reg) < recebe){
-        cliente = tetoCentavos(cliente + 0.01);
-      }
-      return cliente;
-    }
+const chk=document.getElementById("ativarAbsorcao");
+const campos=document.getElementById("camposAbsorcao");
+chk.checked=false;
+campos.classList.remove("show");
+chk.addEventListener("change",()=>campos.classList.toggle("show",chk.checked));
 
-    function getRegistro(prefixo){
-      const bandeira = $(`bandeira_${prefixo}`).value;
-      const meio = $(`meio_${prefixo}`).value;
-      const parcelas = parseInt($(`parcelas_${prefixo}`).value || "1", 10);
-      const tabela = tabelas[bandeira];
-      if(meio === "debito") return tabela.debito;
-      if(tabela.grupoOutras){
-        if(meio === "avista") return outras.avista;
-        return outras.parcelado[parcelas];
-      }
-      if(meio === "avista") return tabela.avista;
-      return tabela.parcelado[parcelas];
-    }
+function preencherAbsorcao(){
+  const band=document.getElementById("absBandeira").value;
+  const selEmp=document.getElementById("absParcelasEmpresa");
+  const selCli=document.getElementById("absParcelasCliente");
+  selEmp.innerHTML="";
+  selCli.innerHTML="";
+  for(let i=2;i<=dados[band].max;i++){
+    selEmp.innerHTML += `<option value="${i}">${i}x</option>`;
+    selCli.innerHTML += `<option value="${i}">${i}x</option>`;
+  }
+  if(dados[band].max>=10) selEmp.value=10;
+  if(dados[band].max>=18) selCli.value=18;
+}
+document.getElementById("absBandeira").addEventListener("change",preencherAbsorcao);
+preencherAbsorcao();
 
-    function atualizarMeios(prefixo){
-      const bandeira = $(`bandeira_${prefixo}`).value;
-      const meio = $(`meio_${prefixo}`);
-      const debitoOpt = [...meio.options].find(o => o.value === "debito");
-      debitoOpt.disabled = !!tabelas[bandeira].semDebito;
-      if(debitoOpt.disabled && meio.value === "debito") meio.value = "avista";
-      atualizarParcelas(prefixo);
-    }
+document.getElementById("btnSimularAbsorcao").addEventListener("click",()=>{
+  const valor=parseMoeda(document.getElementById("absValorBase").value);
+  const band=document.getElementById("absBandeira").value;
+  const pEmp=Number(document.getElementById("absParcelasEmpresa").value);
+  const pCli=Number(document.getElementById("absParcelasCliente").value);
+  if(!valor){alert("Informe o valor base da venda."); return}
+  if(pCli<=pEmp){alert("O parcelamento desejado pelo cliente deve ser maior que as parcelas absorvidas pela empresa."); return}
 
-    function atualizarParcelas(prefixo){
-      const bandeira = $(`bandeira_${prefixo}`).value;
-      const meio = $(`meio_${prefixo}`).value;
-      const tabela = tabelas[bandeira];
-      const select = $(`parcelas_${prefixo}`);
-      select.innerHTML = "";
-      if(meio === "debito"){
-        select.innerHTML = '<option value="0">-</option>';
-        select.disabled = true;
-        return;
-      }
-      if(meio === "avista"){
-        select.innerHTML = '<option value="1">Crédito à vista</option>';
-        select.disabled = true;
-        return;
-      }
-      select.disabled = false;
-      for(let i=2; i<=tabela.maxParcelas; i++){
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = `${i}x`;
-        select.appendChild(opt);
-      }
-    }
+  const base=simularPorValorCobrado(valor,band,"parcelado",pEmp);
+  const final=simularPorLiquidoDesejado(base.liquido,band,"parcelado",pCli);
+  const acrescimo=final.valorCliente-valor;
 
-    function preencher(prefixo, cliente, recebe, reg){
-      const meio = $(`meio_${prefixo}`).value;
-      const bandeiraKey = $(`bandeira_${prefixo}`).value;
-      const bandeiraNome = tabelas[bandeiraKey].nome;
-      const parcelas = meio === "parcelado" ? parseInt($(`parcelas_${prefixo}`).value,10) : 1;
-      const venda = tetoCentavos(cliente * reg.venda / 100);
-      const totalDesconto = tetoCentavos(cliente - recebe);
-      const antecipacaoValor = meio === "debito" ? 0 : tetoCentavos(totalDesconto - venda);
-      const parcela = meio === "debito" ? null : tetoCentavos(cliente / parcelas);
-      const taxaEfetiva = meio === "debito" ? reg.venda : taxaTotalConservadora(reg);
-      const meioTexto = meio === "debito" ? "Débito" : meio === "avista" ? "Crédito à vista" : `Crédito parcelado em ${parcelas}x`;
-      const data = new Date().toLocaleDateString("pt-BR");
-
-      $(`${prefixo[0]}_data`).textContent = data;
-      $(`${prefixo[0]}_bandeira`).textContent = bandeiraNome;
-      $(`${prefixo[0]}_meio`).textContent = meioTexto;
-      $(`${prefixo[0]}_cliente`).textContent = moeda(cliente);
-      $(`${prefixo[0]}_recebe`).textContent = moeda(recebe);
-      $(`${prefixo[0]}_retido`).textContent = moeda(totalDesconto);
-      $(`${prefixo[0]}_venda_valor`).textContent = moeda(venda);
-      $(`${prefixo[0]}_ant_valor`).textContent = meio === "debito" ? "-" : moeda(antecipacaoValor);
-      $(`${prefixo[0]}_parcela`).textContent = meio === "debito" ? "-" : `${moeda(parcela)}${meio === "parcelado" ? ` em ${parcelas}x` : ""}`;
-      $(`${prefixo[0]}_taxa_venda`).textContent = pct(reg.venda);
-      $(`${prefixo[0]}_taxa_ant`).textContent = meio === "debito" ? "-" : pct(reg.antecipacao);
-      $(`${prefixo[0]}_taxa_total`).textContent = pct(taxaEfetiva);
-      $(`resultado_${prefixo}`).classList.add("active");
-      $(`limpar_${prefixo}`).classList.add("active");
-      document.querySelector(".info").style.display = "none";
-    }
-
-
-    function limparSimulacao(prefixo){
-      $(`resultado_${prefixo}`).classList.remove("active");
-      $(`limpar_${prefixo}`).classList.remove("active");
-      $(`valor_${prefixo}`).value = "";
-      $(`meio_${prefixo}`).value = "debito";
-      $(`bandeira_${prefixo}`).value = "visa_master";
-      atualizarMeios(prefixo);
-      if(!$('resultado_cobranca').classList.contains('active') && !$('resultado_liquido').classList.contains('active')){
-        document.querySelector(".info").style.display = "block";
-      }
-    }
-
-    function imprimirResultado(prefixo){
-      document.body.classList.remove("print-cobranca", "print-liquido");
-      document.body.classList.add(prefixo === "cobranca" ? "print-cobranca" : "print-liquido");
-      window.print();
-      setTimeout(() => document.body.classList.remove("print-cobranca", "print-liquido"), 500);
-    }
-
-    function simularCobranca(e){
-      e.preventDefault();
-      const valor = parseMoeda($("valor_cobranca").value);
-      if(!valor || valor <= 0){ alert("Insira um valor válido."); return; }
-      const reg = getRegistro("cobranca");
-      if(!reg){ alert("Parcelamento indisponível para esta bandeira."); return; }
-      const cliente = arred(valor);
-      const recebe = calcularRecebimentoConservador(cliente, reg);
-      preencher("cobranca", cliente, recebe, reg);
-    }
-
-    function simularLiquido(e){
-      e.preventDefault();
-      const valor = parseMoeda($("valor_liquido").value);
-      if(!valor || valor <= 0){ alert("Insira um valor válido."); return; }
-      const reg = getRegistro("liquido");
-      if(!reg){ alert("Parcelamento indisponível para esta bandeira."); return; }
-      const recebeDesejado = arred(valor);
-      const cliente = calcularValorCobrarConservador(recebeDesejado, reg);
-      const recebe = calcularRecebimentoConservador(cliente, reg);
-      preencher("liquido", cliente, recebe, reg);
-    }
-
-    ["cobranca","liquido"].forEach(prefixo => {
-      $(`bandeira_${prefixo}`).addEventListener("change", () => atualizarMeios(prefixo));
-      $(`meio_${prefixo}`).addEventListener("change", () => atualizarParcelas(prefixo));
-      atualizarMeios(prefixo);
-    });
-    ["valor_cobranca","valor_liquido"].forEach(id => {
-      const input = $(id);
-      input.addEventListener("blur", () => formatarCampoMoeda(input));
-      input.addEventListener("focus", () => { input.select(); });
-    });
-    $("formCobranca").addEventListener("submit", simularCobranca);
-    $("formLiquido").addEventListener("submit", simularLiquido);
-  </script>
+  const el=document.getElementById("resultadoAbsorcao");
+  el.innerHTML=`
+    <div class="linha"><span>Valor base da venda</span><strong>${moeda(valor)}</strong></div>
+    <div class="linha"><span>Empresa absorve até</span><strong>${pEmp}x</strong></div>
+    <div class="linha"><span>Cliente deseja</span><strong>${pCli}x</strong></div>
+    <div class="linha"><span>Líquido preservado</span><span class="valor-verde">${moeda(base.liquido)}</span></div>
+    <div class="linha"><span>Valor final ao cliente</span><strong>${moeda(final.valorCliente)}</strong></div>
+    <div class="linha"><span>Diferença repassada</span><span class="valor-vermelho">${moeda(acrescimo)}</span></div>
+    <div class="linha"><span>Parcela final</span><strong>${moeda(final.parcelaValor)} em ${pCli}x</strong></div>
+    <div class="linha"><span>Taxa da venda final</span><strong>${numBR(final.taxaVenda)}%</strong></div>
+    <div class="linha"><span>Taxa de antecipação final</span><strong>${numBR(final.taxaAnt)}%</strong></div>
+  `;
+  el.style.display="block";
+});
+</script>
 </body>
 </html>
