@@ -433,7 +433,7 @@ button{
   </section>
 
   <footer class="rodape">
-    Parcelamento disponível em até 21x, sujeito à disponibilidade e aprovação da quantidade de parcelas pela operadora e pela bandeira do cartão do cliente.
+    Parcelamento disponível em até 21x, sujeito à disponibilidade e aprovação da quantidade de parcelas pela operadora e pela bandeira do cartão do cliente.<br>Simulação em modo conservador: valores de cobrança e descontos são arredondados para cima, e o líquido é considerado para baixo.
   </footer>
 </div>
 
@@ -495,6 +495,8 @@ const demais = {
 };
 ["elo","amex","cabal"].forEach(b=>dados[b].parcelas = demais);
 
+function centavosCima(v){return Math.ceil((v + 0.0000001) * 100) / 100}
+function centavosBaixo(v){return Math.floor((v + 0.0000001) * 100) / 100}
 function moeda(v){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0)}
 function numBR(v){return (v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function parseMoeda(str){return Number(String(str||"").replace(/\D/g,""))/100}
@@ -535,18 +537,31 @@ function obterRegistro(bandeira, meio, parcela){
 function simularPorValorCobrado(valor, bandeira, meio, parcela){
   const reg=obterRegistro(bandeira,meio,parcela);
   const fator=reg.liquido10k/10000;
-  const liquido=valor*fator;
-  const descVenda=valor*(reg.taxaVenda/100);
-  const totalRetido=valor-liquido;
-  const descAnt=Math.max(0,totalRetido-descVenda);
-  const taxaEfetiva=(totalRetido/valor)*100;
-  return {valorCliente:valor, liquido, descVenda, descAnt, totalRetido, taxaEfetiva, taxaVenda:reg.taxaVenda, taxaAnt:reg.taxaAnt, parcelaValor: meio==="parcelado"? valor/parcela: valor, parcela};
+
+  // Modo conservador: a empresa nunca considera receber a mais.
+  const liquido=centavosBaixo(valor*fator);
+  const descVenda=centavosCima(valor*(reg.taxaVenda/100));
+  const totalRetido=centavosCima(valor-liquido);
+  const descAnt=centavosCima(Math.max(0,totalRetido-descVenda));
+  const taxaEfetiva=centavosCima((totalRetido/valor)*100);
+  const parcelaValor=meio==="parcelado" ? centavosCima(valor/parcela) : centavosCima(valor);
+
+  return {valorCliente:centavosCima(valor), liquido, descVenda, descAnt, totalRetido, taxaEfetiva, taxaVenda:reg.taxaVenda, taxaAnt:reg.taxaAnt, parcelaValor, parcela};
 }
 function simularPorLiquidoDesejado(liquidoDesejado,bandeira,meio,parcela){
   const reg=obterRegistro(bandeira,meio,parcela);
   const fator=reg.liquido10k/10000;
-  const valorCliente=liquidoDesejado/fator;
-  return simularPorValorCobrado(valorCliente,bandeira,meio,parcela);
+
+  // Modo conservador: cobra para cima até garantir o líquido desejado.
+  let valorCliente=centavosCima(liquidoDesejado/fator);
+
+  // Garante que, mesmo com arredondamento para baixo do líquido, o valor não fique abaixo do desejado.
+  let tentativa=simularPorValorCobrado(valorCliente,bandeira,meio,parcela);
+  while(tentativa.liquido < liquidoDesejado){
+    valorCliente = centavosCima(valorCliente + 0.01);
+    tentativa = simularPorValorCobrado(valorCliente,bandeira,meio,parcela);
+  }
+  return tentativa;
 }
 function modalidadeTexto(meio, parcela){
   if(meio==="debito") return "Débito";
