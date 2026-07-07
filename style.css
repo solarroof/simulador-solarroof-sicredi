@@ -429,3 +429,11 @@ button{
     margin-bottom:6px;
   }
 }
+
+
+.aviso-bandeira{
+  margin:6px 0 0;
+  font-size:12px;
+  line-height:1.35;
+  color:#52627c;
+}
